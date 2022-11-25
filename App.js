@@ -1,22 +1,51 @@
-import PessoaAddTela from './telas/PessoaAddTela'
-import PessoaListTela from './telas/PessoaListTela';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import { StyleSheet } from 'react-native';
+import ClimaHistoricoTela from './telas/ClimaHistoricoTela';
+import ClimaPesquisaTela from './telas/ClimaPesquisaTela';
+import { Tab, TabView } from '@rneui/themed'
 
-const Stack = createNativeStackNavigator()
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='PessoaList'>
-        <Stack.Screen
-          name="PessoaAdd"
-          component={PessoaAddTela}
-        />
-        <Stack.Screen
-          name='PessoaList'
-          component={PessoaListTela} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    
+    const [index, setIndex] = React.useState(0);
+
+    return (
+        <>
+            <Tab
+                value={index}
+                onChange={(e) => setIndex(e)}
+                indicatorStyle={styles.tab}
+            >
+            <Tab.Item
+                title="Pesquisar"
+                titleStyle={styles.tabItem}
+            />
+            <Tab.Item
+                title="Historico"
+                titleStyle={styles.tabItem}
+            />
+            </Tab>
+            <TabView value={index} onChange={setIndex} animationType="spring">
+                <TabView.Item style={styles.tabView}>
+                    <ClimaPesquisaTela />
+                </TabView.Item>
+                <TabView.Item style={styles.tabView}>
+                    <ClimaHistoricoTela />
+                </TabView.Item>
+            </TabView>
+        </>
+    );
 }
+
+const styles = StyleSheet.create({
+    tab: {
+        backgroundColor: 'black',
+        height: 3,
+    },
+    tabItem: {
+        fontSize: 20,
+        color: 'black'
+    },
+    tabView: {
+      width: '100%'
+    }
+})
