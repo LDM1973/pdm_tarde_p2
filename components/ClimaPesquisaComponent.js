@@ -21,20 +21,23 @@ const ClimaPesquisaComponent = () => {
     }
 
     const obterClima = () => {
+        console.log(cidade)
         const url = encodeURI(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&APPID=0bf938e2e5e491fd9be9d4cedb9b32db&units=metric&lang=pt`)
         fetch(url)
         .then (response => response.json())
         .then(dados => {
-            setClima(dados['list'])
-            addClima(dados['list'])
+            setClima(dados?.weather)
+            addClima(dados?.weather)
         })
     }
 
     const addClima = async (listaClima) => {
         try{
+            console.log(clima?.weather[0])
             if(listaClima){
+                
               return listaClima.map(async (clima) => {
-                const res = await climaService.cadastrarClima({cidade: cidade, data: new Date(clima.dt_txt), link: 'https://openweathermap.org/img/wn/' + clima.weather[0].icon + '.png'})
+                const res = await climaService.cadastrarClima({cidade: cidade, data: new Date(), link: 'https://openweathermap.org/img/wn/' + clima.weather[0].icon + '.png'})
                 setMensagem('Previsão cadastrada com sucesso')
                 setInterval(() => {setMensagem()}, 2500)
               });
